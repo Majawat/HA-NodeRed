@@ -1,0 +1,586 @@
+[
+    {
+        "id": "6d6879949394e936",
+        "type": "tab",
+        "label": "Automate Lights - Location",
+        "disabled": false,
+        "info": "",
+        "env": []
+    },
+    {
+        "id": "d11474d7019799b7",
+        "type": "trigger-state",
+        "z": "6d6879949394e936",
+        "name": "AllFamily Location",
+        "server": "4aa17a56.d0ca74",
+        "version": 5,
+        "inputs": 0,
+        "outputs": 2,
+        "exposeAsEntityConfig": "",
+        "entities": {
+            "entity": [
+                "group.allfamily"
+            ],
+            "substring": [],
+            "regex": []
+        },
+        "debugEnabled": false,
+        "constraints": [],
+        "customOutputs": [],
+        "outputInitially": false,
+        "stateType": "str",
+        "enableInput": false,
+        "exposeToHomeAssistant": false,
+        "haConfig": [
+            {
+                "property": "name",
+                "value": ""
+            },
+            {
+                "property": "icon",
+                "value": ""
+            }
+        ],
+        "x": 110,
+        "y": 40,
+        "wires": [
+            [
+                "3204faed47cf1cc0"
+            ],
+            []
+        ]
+    },
+    {
+        "id": "3204faed47cf1cc0",
+        "type": "switch",
+        "z": "6d6879949394e936",
+        "name": "Home or Away?",
+        "property": "payload",
+        "propertyType": "msg",
+        "rules": [
+            {
+                "t": "eq",
+                "v": "home",
+                "vt": "str"
+            },
+            {
+                "t": "eq",
+                "v": "not_home",
+                "vt": "str"
+            }
+        ],
+        "checkall": "true",
+        "repair": false,
+        "outputs": 2,
+        "x": 280,
+        "y": 120,
+        "wires": [
+            [
+                "bec90f2002ce50b9"
+            ],
+            [
+                "5b2981377dab138d"
+            ]
+        ]
+    },
+    {
+        "id": "3420c1de4a03560d",
+        "type": "inject",
+        "z": "6d6879949394e936",
+        "name": "Home",
+        "props": [
+            {
+                "p": "payload"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "",
+        "payload": "home",
+        "payloadType": "str",
+        "x": 90,
+        "y": 100,
+        "wires": [
+            [
+                "3204faed47cf1cc0"
+            ]
+        ]
+    },
+    {
+        "id": "036768f32266fe5d",
+        "type": "inject",
+        "z": "6d6879949394e936",
+        "name": "Not_Home",
+        "props": [
+            {
+                "p": "payload"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "",
+        "payload": "not_home",
+        "payloadType": "str",
+        "x": 100,
+        "y": 140,
+        "wires": [
+            [
+                "3204faed47cf1cc0"
+            ]
+        ]
+    },
+    {
+        "id": "d77fc4dd05cbfae5",
+        "type": "api-call-service",
+        "z": "6d6879949394e936",
+        "name": "Turn off all lights",
+        "server": "4aa17a56.d0ca74",
+        "version": 7,
+        "debugenabled": false,
+        "action": "light.turn_off",
+        "floorId": [],
+        "areaId": [],
+        "deviceId": [],
+        "entityId": [
+            "all"
+        ],
+        "labelId": [],
+        "data": "",
+        "dataType": "jsonata",
+        "mergeContext": "",
+        "mustacheAltTags": false,
+        "outputProperties": [],
+        "queue": "none",
+        "blockInputOverrides": false,
+        "domain": "light",
+        "service": "turn_off",
+        "x": 300,
+        "y": 360,
+        "wires": [
+            [
+                "5192dc2db305552c"
+            ]
+        ]
+    },
+    {
+        "id": "5b2981377dab138d",
+        "type": "ha-get-entities",
+        "z": "6d6879949394e936",
+        "name": "Get WLED-Front",
+        "server": "4aa17a56.d0ca74",
+        "version": 1,
+        "rules": [
+            {
+                "property": "entity_id",
+                "logic": "is",
+                "value": "light.wled_front",
+                "valueType": "str"
+            },
+            {
+                "property": "state",
+                "logic": "includes",
+                "value": "on,off",
+                "valueType": "str"
+            }
+        ],
+        "outputType": "split",
+        "outputEmptyResults": false,
+        "outputLocationType": "msg",
+        "outputLocation": "payload",
+        "outputResultsCount": 1,
+        "x": 250,
+        "y": 220,
+        "wires": [
+            [
+                "376cce13b8303d6c"
+            ]
+        ]
+    },
+    {
+        "id": "b6e3aa94271a7add",
+        "type": "debug",
+        "z": "6d6879949394e936",
+        "name": "msg.payload",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "payload",
+        "targetType": "msg",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 1030,
+        "y": 220,
+        "wires": []
+    },
+    {
+        "id": "c1c660c63fcbec83",
+        "type": "api-call-service",
+        "z": "6d6879949394e936",
+        "name": "Restore WLED-Front",
+        "server": "4aa17a56.d0ca74",
+        "version": 7,
+        "debugenabled": false,
+        "floorId": [],
+        "areaId": [],
+        "deviceId": [],
+        "entityId": [],
+        "labelId": [],
+        "data": "",
+        "dataType": "jsonata",
+        "mergeContext": "",
+        "mustacheAltTags": false,
+        "outputProperties": [
+            {
+                "property": "payload",
+                "propertyType": "msg",
+                "value": "Empty House",
+                "valueType": "str"
+            }
+        ],
+        "queue": "none",
+        "blockInputOverrides": false,
+        "domain": "",
+        "service": "",
+        "x": 880,
+        "y": 360,
+        "wires": [
+            [
+                "b6e3aa94271a7add",
+                "7f4bc8cb076d123a"
+            ]
+        ]
+    },
+    {
+        "id": "5192dc2db305552c",
+        "type": "change",
+        "z": "6d6879949394e936",
+        "name": "Get Saved States",
+        "rules": [
+            {
+                "t": "set",
+                "p": "payload",
+                "pt": "msg",
+                "to": "savedStates",
+                "tot": "flow"
+            }
+        ],
+        "action": "",
+        "property": "",
+        "from": "",
+        "to": "",
+        "reg": false,
+        "x": 510,
+        "y": 360,
+        "wires": [
+            [
+                "a28c044b8e62075b"
+            ]
+        ]
+    },
+    {
+        "id": "a28c044b8e62075b",
+        "type": "split",
+        "z": "6d6879949394e936",
+        "name": "",
+        "splt": "\\n",
+        "spltType": "str",
+        "arraySplt": 1,
+        "arraySpltType": "len",
+        "stream": false,
+        "addname": "",
+        "x": 690,
+        "y": 360,
+        "wires": [
+            [
+                "c1c660c63fcbec83"
+            ]
+        ]
+    },
+    {
+        "id": "0e0fc15287d76646",
+        "type": "change",
+        "z": "6d6879949394e936",
+        "name": "",
+        "rules": [
+            {
+                "t": "set",
+                "p": "savedStates",
+                "pt": "flow",
+                "to": "payload",
+                "tot": "msg"
+            }
+        ],
+        "action": "",
+        "property": "",
+        "from": "",
+        "to": "",
+        "reg": false,
+        "x": 760,
+        "y": 220,
+        "wires": [
+            [
+                "d77fc4dd05cbfae5"
+            ]
+        ]
+    },
+    {
+        "id": "376cce13b8303d6c",
+        "type": "function",
+        "z": "6d6879949394e936",
+        "name": "transform data",
+        "func": "const payload = {};\npayload.domain = msg.payload.entity_id.split('.')[0];\npayload.service = `turn_${msg.payload.state}`;\npayload.data = { entity_id: msg.payload.entity_id };\n\n// create a blank message object with out new payload\nmsg = { payload: payload };\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "x": 440,
+        "y": 220,
+        "wires": [
+            [
+                "16d1b1bc7496f70f"
+            ]
+        ]
+    },
+    {
+        "id": "16d1b1bc7496f70f",
+        "type": "join",
+        "z": "6d6879949394e936",
+        "name": "",
+        "mode": "custom",
+        "build": "array",
+        "property": "payload",
+        "propertyType": "msg",
+        "key": "topic",
+        "joiner": "\\n",
+        "joinerType": "str",
+        "accumulate": false,
+        "timeout": "5",
+        "count": "",
+        "reduceRight": false,
+        "reduceExp": "",
+        "reduceInit": "",
+        "reduceInitType": "",
+        "reduceFixup": "",
+        "x": 590,
+        "y": 220,
+        "wires": [
+            [
+                "0e0fc15287d76646"
+            ]
+        ]
+    },
+    {
+        "id": "6bf357c1a9025e98",
+        "type": "api-call-service",
+        "z": "6d6879949394e936",
+        "name": "House Dimmed",
+        "server": "4aa17a56.d0ca74",
+        "version": 7,
+        "debugenabled": false,
+        "action": "scene.turn_on",
+        "floorId": [],
+        "areaId": [],
+        "deviceId": [],
+        "entityId": [
+            "scene.foyer_dimmed",
+            "scene.hallway_nightlight",
+            "scene.downstairs_hallway_nightlight",
+            "scene.kitchen_dimmed"
+        ],
+        "labelId": [],
+        "data": "",
+        "dataType": "jsonata",
+        "mergeContext": "",
+        "mustacheAltTags": false,
+        "outputProperties": [
+            {
+                "property": "payload",
+                "propertyType": "msg",
+                "value": "Turning on lights",
+                "valueType": "str"
+            }
+        ],
+        "queue": "none",
+        "blockInputOverrides": false,
+        "domain": "scene",
+        "service": "turn_on",
+        "x": 820,
+        "y": 120,
+        "wires": [
+            [
+                "b6e3aa94271a7add",
+                "866fcde15a74eedb"
+            ]
+        ]
+    },
+    {
+        "id": "7f4bc8cb076d123a",
+        "type": "api-call-service",
+        "z": "6d6879949394e936",
+        "name": "Notify Cody of Empty House",
+        "server": "4aa17a56.d0ca74",
+        "version": 7,
+        "debugenabled": false,
+        "action": "notify.mobile_app_pixel_8_pro",
+        "floorId": [],
+        "areaId": [],
+        "deviceId": [],
+        "entityId": [],
+        "labelId": [],
+        "data": "{\"message\":\"No one home, turning off lights\",\"title\":\"Empty House\"}",
+        "dataType": "json",
+        "mergeContext": "",
+        "mustacheAltTags": false,
+        "outputProperties": [],
+        "queue": "none",
+        "blockInputOverrides": false,
+        "domain": "notify",
+        "service": "mobile_app_pixel_8_pro",
+        "x": 1220,
+        "y": 360,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "bec90f2002ce50b9",
+        "type": "api-current-state",
+        "z": "6d6879949394e936",
+        "name": "Sun?",
+        "server": "4aa17a56.d0ca74",
+        "version": 3,
+        "outputs": 1,
+        "halt_if": "",
+        "halt_if_type": "str",
+        "halt_if_compare": "is",
+        "entity_id": "sun.sun",
+        "state_type": "str",
+        "blockInputOverrides": false,
+        "outputProperties": [
+            {
+                "property": "payload",
+                "propertyType": "msg",
+                "value": "",
+                "valueType": "entityState"
+            }
+        ],
+        "for": 0,
+        "forType": "num",
+        "forUnits": "minutes",
+        "override_topic": false,
+        "state_location": "payload",
+        "override_payload": "msg",
+        "entity_location": "data",
+        "override_data": "msg",
+        "x": 450,
+        "y": 120,
+        "wires": [
+            [
+                "10f1f5db47407578"
+            ]
+        ]
+    },
+    {
+        "id": "10f1f5db47407578",
+        "type": "switch",
+        "z": "6d6879949394e936",
+        "name": "Horizon",
+        "property": "payload",
+        "propertyType": "msg",
+        "rules": [
+            {
+                "t": "eq",
+                "v": "below_horizon",
+                "vt": "str"
+            },
+            {
+                "t": "eq",
+                "v": "above_horizon",
+                "vt": "str"
+            }
+        ],
+        "checkall": "true",
+        "repair": false,
+        "outputs": 2,
+        "x": 600,
+        "y": 120,
+        "wires": [
+            [
+                "6bf357c1a9025e98"
+            ],
+            []
+        ]
+    },
+    {
+        "id": "866fcde15a74eedb",
+        "type": "api-call-service",
+        "z": "6d6879949394e936",
+        "name": "Notify Cody: Home",
+        "server": "4aa17a56.d0ca74",
+        "version": 7,
+        "debugenabled": false,
+        "action": "notify.mobile_app_pixel_8_pro",
+        "floorId": [],
+        "areaId": [],
+        "deviceId": [],
+        "entityId": [],
+        "labelId": [],
+        "data": "{\"message\":\"Home, turning on nightlights.\",\"title\":\"Welcome home\"}",
+        "dataType": "json",
+        "mergeContext": "",
+        "mustacheAltTags": false,
+        "outputProperties": [],
+        "queue": "none",
+        "blockInputOverrides": false,
+        "domain": "notify",
+        "service": "mobile_app_pixel_8_pro",
+        "x": 1090,
+        "y": 120,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "dab52f78b403cfc7",
+        "type": "catch",
+        "z": "6d6879949394e936",
+        "name": "If WLED Error",
+        "scope": [
+            "5b2981377dab138d"
+        ],
+        "uncaught": false,
+        "x": 110,
+        "y": 400,
+        "wires": [
+            [
+                "d77fc4dd05cbfae5"
+            ]
+        ]
+    },
+    {
+        "id": "4aa17a56.d0ca74",
+        "type": "server",
+        "name": "Home Assistant",
+        "version": 5,
+        "addon": true,
+        "rejectUnauthorizedCerts": true,
+        "ha_boolean": "y|yes|true|on|home|open",
+        "connectionDelay": true,
+        "cacheJson": true,
+        "heartbeat": false,
+        "heartbeatInterval": "30",
+        "areaSelector": "friendlyName",
+        "deviceSelector": "friendlyName",
+        "entitySelector": "friendlyName",
+        "statusSeparator": "at: ",
+        "statusYear": "hidden",
+        "statusMonth": "short",
+        "statusDay": "numeric",
+        "statusHourCycle": "h23",
+        "statusTimeFormat": "h:m",
+        "enableGlobalContextStore": true
+    }
+]

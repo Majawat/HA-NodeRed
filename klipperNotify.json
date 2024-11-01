@@ -1,0 +1,597 @@
+[
+    {
+        "id": "209d66e196ca3137",
+        "type": "tab",
+        "label": "Klipper Notify",
+        "disabled": false,
+        "info": "",
+        "env": []
+    },
+    {
+        "id": "5ef5cb26be9b26e4",
+        "type": "trigger-state",
+        "z": "209d66e196ca3137",
+        "name": "State Change",
+        "server": "4aa17a56.d0ca74",
+        "version": 5,
+        "inputs": 0,
+        "outputs": 2,
+        "exposeAsEntityConfig": "",
+        "entities": {
+            "entity": [
+                "sensor.ender5plus_current_print_state"
+            ],
+            "substring": [],
+            "regex": []
+        },
+        "debugEnabled": false,
+        "constraints": [],
+        "customOutputs": [],
+        "outputInitially": false,
+        "stateType": "str",
+        "enableInput": false,
+        "exposeToHomeAssistant": false,
+        "haConfig": [
+            {
+                "property": "name",
+                "value": ""
+            },
+            {
+                "property": "icon",
+                "value": ""
+            }
+        ],
+        "x": 130,
+        "y": 200,
+        "wires": [
+            [
+                "e78093081b33af17"
+            ],
+            []
+        ]
+    },
+    {
+        "id": "f08de35e96a2b269",
+        "type": "api-call-service",
+        "z": "209d66e196ca3137",
+        "name": "Notify Cody",
+        "server": "4aa17a56.d0ca74",
+        "version": 7,
+        "debugenabled": false,
+        "action": "notify.mobile_app_pixel_8_pro",
+        "floorId": [],
+        "areaId": [],
+        "deviceId": [],
+        "entityId": [],
+        "labelId": [],
+        "data": "{\t   \"message\": message,\t   \"title\": \"Ender 5 Plus\"\t}",
+        "dataType": "jsonata",
+        "mergeContext": "",
+        "mustacheAltTags": false,
+        "outputProperties": [],
+        "queue": "none",
+        "blockInputOverrides": false,
+        "domain": "notify",
+        "service": "mobile_app_pixel_8_pro",
+        "x": 810,
+        "y": 120,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "77dfbdf13b8482a1",
+        "type": "debug",
+        "z": "209d66e196ca3137",
+        "name": "",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "true",
+        "targetType": "full",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 1050,
+        "y": 200,
+        "wires": []
+    },
+    {
+        "id": "e78093081b33af17",
+        "type": "switch",
+        "z": "209d66e196ca3137",
+        "name": "State?",
+        "property": "payload",
+        "propertyType": "msg",
+        "rules": [
+            {
+                "t": "eq",
+                "v": "cancelled",
+                "vt": "str"
+            },
+            {
+                "t": "eq",
+                "v": "printing",
+                "vt": "str"
+            },
+            {
+                "t": "eq",
+                "v": "complete",
+                "vt": "str"
+            },
+            {
+                "t": "eq",
+                "v": "error",
+                "vt": "str"
+            },
+            {
+                "t": "eq",
+                "v": "standby",
+                "vt": "str"
+            },
+            {
+                "t": "eq",
+                "v": "paused",
+                "vt": "str"
+            }
+        ],
+        "checkall": "true",
+        "repair": false,
+        "outputs": 6,
+        "x": 370,
+        "y": 220,
+        "wires": [
+            [
+                "64a40f85d6d53fef"
+            ],
+            [
+                "71920fd8598b03e5"
+            ],
+            [
+                "1a872e13b9d41699"
+            ],
+            [
+                "21762c7842e9a8f7"
+            ],
+            [
+                "3573debc70508a89"
+            ],
+            [
+                "d9568d2a512966ef"
+            ]
+        ]
+    },
+    {
+        "id": "1a872e13b9d41699",
+        "type": "change",
+        "z": "209d66e196ca3137",
+        "name": "Complete",
+        "rules": [
+            {
+                "t": "set",
+                "p": "message",
+                "pt": "msg",
+                "to": "Print is complete",
+                "tot": "str"
+            },
+            {
+                "t": "set",
+                "p": "title",
+                "pt": "msg",
+                "to": "Print Complete",
+                "tot": "str"
+            },
+            {
+                "t": "set",
+                "p": "payload",
+                "pt": "msg",
+                "to": "complete",
+                "tot": "str"
+            }
+        ],
+        "action": "",
+        "property": "",
+        "from": "",
+        "to": "",
+        "reg": false,
+        "x": 580,
+        "y": 180,
+        "wires": [
+            [
+                "281c608ebf345ded"
+            ]
+        ]
+    },
+    {
+        "id": "64a40f85d6d53fef",
+        "type": "change",
+        "z": "209d66e196ca3137",
+        "name": "Canceled",
+        "rules": [
+            {
+                "t": "set",
+                "p": "message",
+                "pt": "msg",
+                "to": "Print is cancelled",
+                "tot": "str"
+            },
+            {
+                "t": "set",
+                "p": "title",
+                "pt": "msg",
+                "to": "Print Canceled",
+                "tot": "str"
+            },
+            {
+                "t": "set",
+                "p": "payload",
+                "pt": "msg",
+                "to": "canceled",
+                "tot": "str"
+            }
+        ],
+        "action": "",
+        "property": "",
+        "from": "",
+        "to": "",
+        "reg": false,
+        "x": 580,
+        "y": 100,
+        "wires": [
+            [
+                "f08de35e96a2b269"
+            ]
+        ]
+    },
+    {
+        "id": "71920fd8598b03e5",
+        "type": "change",
+        "z": "209d66e196ca3137",
+        "name": "Printing",
+        "rules": [
+            {
+                "t": "set",
+                "p": "message",
+                "pt": "msg",
+                "to": "Print has started",
+                "tot": "str"
+            },
+            {
+                "t": "set",
+                "p": "title",
+                "pt": "msg",
+                "to": "Print Started",
+                "tot": "str"
+            },
+            {
+                "t": "set",
+                "p": "payload",
+                "pt": "msg",
+                "to": "printing",
+                "tot": "str"
+            }
+        ],
+        "action": "",
+        "property": "",
+        "from": "",
+        "to": "",
+        "reg": false,
+        "x": 580,
+        "y": 140,
+        "wires": [
+            [
+                "f08de35e96a2b269"
+            ]
+        ]
+    },
+    {
+        "id": "d9568d2a512966ef",
+        "type": "change",
+        "z": "209d66e196ca3137",
+        "name": "Paused",
+        "rules": [
+            {
+                "t": "set",
+                "p": "message",
+                "pt": "msg",
+                "to": "Print is paused",
+                "tot": "str"
+            },
+            {
+                "t": "set",
+                "p": "title",
+                "pt": "msg",
+                "to": "Print Paused",
+                "tot": "str"
+            },
+            {
+                "t": "set",
+                "p": "payload",
+                "pt": "msg",
+                "to": "paused",
+                "tot": "str"
+            }
+        ],
+        "action": "",
+        "property": "",
+        "from": "",
+        "to": "",
+        "reg": false,
+        "x": 580,
+        "y": 340,
+        "wires": [
+            [
+                "f6ec06a903fcc2b8"
+            ]
+        ]
+    },
+    {
+        "id": "21762c7842e9a8f7",
+        "type": "change",
+        "z": "209d66e196ca3137",
+        "name": "Error",
+        "rules": [
+            {
+                "t": "set",
+                "p": "message",
+                "pt": "msg",
+                "to": "Print has errored!",
+                "tot": "str"
+            },
+            {
+                "t": "set",
+                "p": "title",
+                "pt": "msg",
+                "to": "Print Error!",
+                "tot": "str"
+            },
+            {
+                "t": "set",
+                "p": "payload",
+                "pt": "msg",
+                "to": "error",
+                "tot": "str"
+            }
+        ],
+        "action": "",
+        "property": "",
+        "from": "",
+        "to": "",
+        "reg": false,
+        "x": 570,
+        "y": 220,
+        "wires": [
+            [
+                "281c608ebf345ded"
+            ]
+        ]
+    },
+    {
+        "id": "3573debc70508a89",
+        "type": "change",
+        "z": "209d66e196ca3137",
+        "name": "Standby",
+        "rules": [
+            {
+                "t": "set",
+                "p": "message",
+                "pt": "msg",
+                "to": "Printer is on standby",
+                "tot": "str"
+            },
+            {
+                "t": "set",
+                "p": "title",
+                "pt": "msg",
+                "to": "Printer on standby",
+                "tot": "str"
+            },
+            {
+                "t": "set",
+                "p": "payload",
+                "pt": "msg",
+                "to": "error",
+                "tot": "str"
+            }
+        ],
+        "action": "",
+        "property": "",
+        "from": "",
+        "to": "",
+        "reg": false,
+        "x": 580,
+        "y": 260,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "3cf2f94dc94b1c53",
+        "type": "inject",
+        "z": "209d66e196ca3137",
+        "name": "",
+        "props": [
+            {
+                "p": "payload"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "",
+        "payload": "complete",
+        "payloadType": "str",
+        "x": 180,
+        "y": 300,
+        "wires": [
+            [
+                "e78093081b33af17"
+            ]
+        ]
+    },
+    {
+        "id": "281c608ebf345ded",
+        "type": "api-call-service",
+        "z": "209d66e196ca3137",
+        "name": "Notify /w Pic",
+        "server": "4aa17a56.d0ca74",
+        "version": 7,
+        "debugenabled": false,
+        "action": "notify.mobile_app_pixel_8_pro",
+        "floorId": [],
+        "areaId": [],
+        "deviceId": [],
+        "entityId": [],
+        "labelId": [],
+        "data": "{\t   \"title\": \"Ender 5 Plus\",\t   \"message\": message,\t   \"data\": {\t       \"image\": $entities('camera.ender5plus_c910').attributes.entity_picture\t    }\t}",
+        "dataType": "jsonata",
+        "mergeContext": "",
+        "mustacheAltTags": false,
+        "outputProperties": [],
+        "queue": "none",
+        "blockInputOverrides": false,
+        "domain": "notify",
+        "service": "mobile_app_pixel_8_pro",
+        "x": 810,
+        "y": 200,
+        "wires": [
+            [
+                "77dfbdf13b8482a1"
+            ]
+        ]
+    },
+    {
+        "id": "60ab7135c7db7886",
+        "type": "inject",
+        "z": "209d66e196ca3137",
+        "name": "printing",
+        "props": [
+            {
+                "p": "payload"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "",
+        "payload": "printing",
+        "payloadType": "str",
+        "x": 170,
+        "y": 340,
+        "wires": [
+            [
+                "e78093081b33af17"
+            ]
+        ]
+    },
+    {
+        "id": "fe7540d1df482f93",
+        "type": "inject",
+        "z": "209d66e196ca3137",
+        "name": "paused",
+        "props": [
+            {
+                "p": "payload"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "",
+        "payload": "paused",
+        "payloadType": "str",
+        "x": 170,
+        "y": 380,
+        "wires": [
+            [
+                "e78093081b33af17"
+            ]
+        ]
+    },
+    {
+        "id": "f6ec06a903fcc2b8",
+        "type": "api-current-state",
+        "z": "209d66e196ca3137",
+        "name": "Get Display Message",
+        "server": "4aa17a56.d0ca74",
+        "version": 3,
+        "outputs": 1,
+        "halt_if": "",
+        "halt_if_type": "str",
+        "halt_if_compare": "is",
+        "entity_id": "sensor.ender5plus_current_display_message",
+        "state_type": "str",
+        "blockInputOverrides": false,
+        "outputProperties": [
+            {
+                "property": "display_message",
+                "propertyType": "msg",
+                "value": "",
+                "valueType": "entityState"
+            }
+        ],
+        "for": 0,
+        "forType": "num",
+        "forUnits": "minutes",
+        "x": 780,
+        "y": 360,
+        "wires": [
+            [
+                "c4287220479ede7d"
+            ]
+        ]
+    },
+    {
+        "id": "c4287220479ede7d",
+        "type": "change",
+        "z": "209d66e196ca3137",
+        "name": "Append Display Message",
+        "rules": [
+            {
+                "t": "set",
+                "p": "message",
+                "pt": "msg",
+                "to": "$join([message, display_message], '.\\nM117: ')",
+                "tot": "jsonata"
+            }
+        ],
+        "action": "",
+        "property": "",
+        "from": "",
+        "to": "",
+        "reg": false,
+        "x": 790,
+        "y": 300,
+        "wires": [
+            [
+                "281c608ebf345ded"
+            ]
+        ]
+    },
+    {
+        "id": "4aa17a56.d0ca74",
+        "type": "server",
+        "name": "Home Assistant",
+        "version": 5,
+        "addon": true,
+        "rejectUnauthorizedCerts": true,
+        "ha_boolean": "y|yes|true|on|home|open",
+        "connectionDelay": true,
+        "cacheJson": true,
+        "heartbeat": false,
+        "heartbeatInterval": "30",
+        "areaSelector": "friendlyName",
+        "deviceSelector": "friendlyName",
+        "entitySelector": "friendlyName",
+        "statusSeparator": "at: ",
+        "statusYear": "hidden",
+        "statusMonth": "short",
+        "statusDay": "numeric",
+        "statusHourCycle": "h23",
+        "statusTimeFormat": "h:m",
+        "enableGlobalContextStore": true
+    }
+]

@@ -1,0 +1,238 @@
+[
+    {
+        "id": "03401739a9d09e5f",
+        "type": "tab",
+        "label": "Kitchen Sync",
+        "disabled": false,
+        "info": "",
+        "env": []
+    },
+    {
+        "id": "f7e443492c0181b9",
+        "type": "trigger-state",
+        "z": "03401739a9d09e5f",
+        "name": "Kitchen Sink trigger",
+        "server": "4aa17a56.d0ca74",
+        "version": 5,
+        "inputs": 0,
+        "outputs": 2,
+        "exposeAsEntityConfig": "",
+        "entities": {
+            "entity": [
+                "light.kitchen_sink"
+            ],
+            "substring": [],
+            "regex": []
+        },
+        "debugEnabled": false,
+        "constraints": [],
+        "customOutputs": [],
+        "outputInitially": false,
+        "stateType": "str",
+        "enableInput": false,
+        "exposeToHomeAssistant": false,
+        "haConfig": [
+            {
+                "property": "name",
+                "value": ""
+            },
+            {
+                "property": "icon",
+                "value": ""
+            }
+        ],
+        "x": 190,
+        "y": 180,
+        "wires": [
+            [
+                "024b78ef5598830e",
+                "c09ac9ef97e4d4f8"
+            ],
+            []
+        ]
+    },
+    {
+        "id": "024b78ef5598830e",
+        "type": "switch",
+        "z": "03401739a9d09e5f",
+        "name": "On or Off?",
+        "property": "payload",
+        "propertyType": "msg",
+        "rules": [
+            {
+                "t": "eq",
+                "v": "on",
+                "vt": "str"
+            },
+            {
+                "t": "eq",
+                "v": "off",
+                "vt": "str"
+            }
+        ],
+        "checkall": "false",
+        "repair": false,
+        "outputs": 2,
+        "x": 430,
+        "y": 180,
+        "wires": [
+            [
+                "3cc0daee4ddca844"
+            ],
+            [
+                "1fb64316b50750e8"
+            ]
+        ]
+    },
+    {
+        "id": "3cc0daee4ddca844",
+        "type": "api-call-service",
+        "z": "03401739a9d09e5f",
+        "name": "Adjust WLED Kitchen",
+        "server": "4aa17a56.d0ca74",
+        "version": 7,
+        "debugenabled": false,
+        "action": "light.turn_on",
+        "floorId": [],
+        "areaId": [],
+        "deviceId": [],
+        "entityId": [
+            "light.wled_kitchen"
+        ],
+        "labelId": [],
+        "data": "{\t   \"brightness\": data.event.new_state.attributes.brightness,\t   \"rgb_color\": data.event.new_state.attributes.rgb_color \t}",
+        "dataType": "jsonata",
+        "mergeContext": "",
+        "mustacheAltTags": false,
+        "outputProperties": [],
+        "queue": "none",
+        "blockInputOverrides": false,
+        "domain": "light",
+        "service": "turn_on",
+        "x": 700,
+        "y": 160,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "39552d0360434911",
+        "type": "inject",
+        "z": "03401739a9d09e5f",
+        "name": "inject On",
+        "props": [
+            {
+                "p": "payload"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": "",
+        "topic": "",
+        "payload": "on",
+        "payloadType": "str",
+        "x": 200,
+        "y": 120,
+        "wires": [
+            [
+                "024b78ef5598830e"
+            ]
+        ]
+    },
+    {
+        "id": "153e72c5e798a1bc",
+        "type": "inject",
+        "z": "03401739a9d09e5f",
+        "name": "inject Off",
+        "props": [
+            {
+                "p": "payload"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": "",
+        "topic": "",
+        "payload": "off",
+        "payloadType": "str",
+        "x": 200,
+        "y": 260,
+        "wires": [
+            [
+                "024b78ef5598830e"
+            ]
+        ]
+    },
+    {
+        "id": "1fb64316b50750e8",
+        "type": "api-call-service",
+        "z": "03401739a9d09e5f",
+        "name": "Turn off kitchen",
+        "server": "4aa17a56.d0ca74",
+        "version": 7,
+        "debugenabled": false,
+        "action": "light.turn_off",
+        "floorId": [],
+        "areaId": [],
+        "deviceId": [],
+        "entityId": [
+            "light.wled_kitchen"
+        ],
+        "labelId": [],
+        "data": "",
+        "dataType": "jsonata",
+        "mergeContext": "",
+        "mustacheAltTags": false,
+        "outputProperties": [],
+        "queue": "none",
+        "blockInputOverrides": false,
+        "domain": "light",
+        "service": "turn_off",
+        "x": 680,
+        "y": 220,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "c09ac9ef97e4d4f8",
+        "type": "debug",
+        "z": "03401739a9d09e5f",
+        "name": "debug 1",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "false",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 460,
+        "y": 300,
+        "wires": []
+    },
+    {
+        "id": "4aa17a56.d0ca74",
+        "type": "server",
+        "name": "Home Assistant",
+        "version": 5,
+        "addon": true,
+        "rejectUnauthorizedCerts": true,
+        "ha_boolean": "y|yes|true|on|home|open",
+        "connectionDelay": true,
+        "cacheJson": true,
+        "heartbeat": false,
+        "heartbeatInterval": "30",
+        "areaSelector": "friendlyName",
+        "deviceSelector": "friendlyName",
+        "entitySelector": "friendlyName",
+        "statusSeparator": "at: ",
+        "statusYear": "hidden",
+        "statusMonth": "short",
+        "statusDay": "numeric",
+        "statusHourCycle": "h23",
+        "statusTimeFormat": "h:m",
+        "enableGlobalContextStore": true
+    }
+]
